@@ -7,11 +7,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
 
-  // CORS: permite que tu React consuma la API. Bruno no lo necesita, pero no estorba.
+  // CORS: permite que React consuma la API.
   app.enableCors({ origin: true, credentials: true });
 
   // ValidationPipe GLOBAL: sin esto, los @IsString(), @IsEmail(), etc. de los DTO
-  // NO se ejecutan. Es el error nº1 de quien empieza en NestJS.
+  // NO se ejecutan.
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // borra propiedades que no estén declaradas en el DTO
