@@ -5,7 +5,7 @@
 > Profesor: **Juan Carlos Herrera Hernández**
 
 Profesor Herrera, en este documento le explicamos Olivia y Odin cómo
-funciona nuestro proyecto del foro, tanto la **base de datos** como el
+funciona nuestro proyecto del foro, tanto la base de datos como el
 backend. Lo redactamos para que, al leerlo, pueda seguir la lógica del
 proyecto sin tener que andar abriendo archivo por archivo, y para dejar claro el
 porqué de cada cosa que decidimos.
@@ -39,8 +39,16 @@ para la seguridad.
 ---
 
 # Parte 1 — Base de datos
+## Antes de empezar: Instale las dependencias
 
-La base se llama `foro` y la manejamos con MongoDB, conectada desde el
+```bash
+npm i
+npm i @nestjs/mongoose mongoose @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt @nestjs/config @nestjs/mapped-types class-validator class-transformer
+npm i -D @types/passport-jwt @types/bcrypt
+```
+Eso con el fin de que el proyecto se pueda correr dentro de su equipo, ya que fue necesario 
+implementar dichas librerias de node dentro del codigo. Bueno, dejando eso de lado, 
+la base se llama `foro` y la manejamos con MongoDB, conectada desde el
 backend con Mongoose. Tiene tres colecciones: usuarios, posts y
 comments. La onda es sencilla: un usuario escribe publicaciones, una
 publicación recibe comentarios, y cada comentario pertenece a un usuario y a una
