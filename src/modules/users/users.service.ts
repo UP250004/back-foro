@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-import { User, UserDocument } from '../../schemas/users.schema';
+import { User, UserDocument, UserRole } from '../../schemas/users.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -17,7 +17,7 @@ const SALT_ROUNDS = 12;
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-  ) {}
+  ) { }
 
   async create(dto: CreateUserDto): Promise<UserDocument> {
     const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
@@ -92,10 +92,22 @@ export class UsersService {
       .skip(skip)
       .limit(Math.min(limit, 100))
       .exec();
-  }
+  }///adaasjdsafcsds
 
   // Utilidad reutilizable: compara una contraseña plana contra su hash.
   async verifyPassword(plain: string, hash: string): Promise<boolean> {
     return bcrypt.compare(plain, hash);
+  }
+  async changeRolmamada(id: string, rol: UserRole): Promise<UserDocument> {
+    const valor = id.toLowerCase().trim();
+    const user = await this.userModel
+      .findOneAndUpdate(
+        { deletedAt: null, $or: [{ username: valor }, { email: valor }] },
+        { $set: { rol } },
+        { new: true },
+      )
+      .exec();
+    if (!user) throw new NotFoundException('Usuario no encontrado.');
+    return user;
   }
 }

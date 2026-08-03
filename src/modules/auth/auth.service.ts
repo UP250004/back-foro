@@ -6,16 +6,27 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UserDocument } from '../../schemas/users.schema';
+import { ConfigService } from '@nestjs/config';
+import { SetupAdminDto } from './dto/rolesCambios.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly config: ConfigService
   ) {}
+async setupAdmin(dto: SetupAdminDto) {
+  const esperada = this.config.getOrThrow<string>('ADMIN_SETUP_KEY');
 
-  // Registro: delega en UsersService (hashea + controla duplicados) y
-  // devuelve el token de una vez para no obligar a un login extra.
+  // Comparación estricta: sin la clave correcta, no hay ascenso.
+  if (dto.adminKey !== esperada) {
+    throw new UnauthorizedException('Clave de administrador inválida.');
+  }
+
+  const user = await this.usersService.changeRolmamada(dto.id, 'admin');
+  return { message: `${user.username} ahora es admin.` };
+}
   async register(dto: CreateUserDto) {
     const user = await this.usersService.create(dto);
     return this.buildAuthResponse(user);
