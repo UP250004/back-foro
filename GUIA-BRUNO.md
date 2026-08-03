@@ -5,21 +5,7 @@ Guía paso a paso para levantar el backend y probar todos los endpoints con
 
 ---
 
-## 0. Antes de empezar: instalar y levantar
-
-### 0.1 Instala las dependencias
-
-```bash
-npm i @nestjs/mongoose mongoose @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt @nestjs/config @nestjs/mapped-types class-validator class-transformer
-npm i -D @types/passport-jwt @types/bcrypt
-```
-
-### 0.2 Renombra el schema de post (consistencia)
-
-Tenías `post.schema.ts` (singular). Este código usa `posts.schema.ts` (plural),
-igual que `users` y `comments`. Renómbralo o reemplázalo con el que generé.
-
-### 0.3 Crea tu `.env`
+### 0.1 Crea tu `.env`
 
 ```bash
 cp .env.example .env
@@ -33,12 +19,12 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 
 Pega el resultado en `JWT_SECRET`.
 
-### 0.4 Asegura MongoDB corriendo
+### 0.2 Asegura MongoDB corriendo
 
 Local: que el servicio `mongod` esté activo. O usa una cadena de MongoDB Atlas
 en `MONGODB_URI`.
 
-### 0.5 Levanta el servidor
+### 0.3 Levanta el servidor
 
 ```bash
 npm run start:dev
